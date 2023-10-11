@@ -17,8 +17,11 @@ export const Application = () => {
   const [isError, setIsError] = useState(false);
   const [isFieldShown, setIsFieldShown] = useState(false);
   const [fieldCount, setFieldCount] = useState(0);
-  const [coloredBlockCoordinatesArr, setColoredBlockCoordinates] = useState<BlockCoordinates[]>([]);
-  const [newColoredBlockCoordinates, setNewColoredBlockCoordinates] = useState<BlockCoordinates>({ row: 0, column: 0 });
+  const [coloredBlockCoordinatesArr, setColoredBlockCoordinates] = useState<
+    BlockCoordinates[]
+  >([]);
+  const [newColoredBlockCoordinates, setNewColoredBlockCoordinates] =
+    useState<BlockCoordinates>({ row: 0, column: 0 });
 
   useEffect(() => {
     getData();
