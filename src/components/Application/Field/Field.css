@@ -1,0 +1,8 @@
+.field {
+  display: grid;
+  box-sizing: content-box;
+  grid-template-columns: repeat(var(--fields-count), 1fr);
+  grid-template-rows: repeat(var(--fields-count), 1fr);
+  aspect-ratio : 1 / 1;
+  width: 100%;
+}
