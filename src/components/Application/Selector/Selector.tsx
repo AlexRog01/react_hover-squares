@@ -2,7 +2,6 @@ import './Selector.css';
 
 import { FC, useState } from 'react';
 
-import { BlockCoordinates } from '../../../types/BlockCoordinates';
 import { PresetForTable } from '../../../types/PresetForTable';
 import { SelectorContentSetter } from './SelectorContentSetter/SelectorContentSetter';
 
@@ -10,24 +9,24 @@ type Props = {
   isLoading: boolean;
   isError: boolean;
   presetsForTable: PresetForTable[];
-  setFieldCount: (count: number) => void;
+  setOption: React.Dispatch<React.SetStateAction<number>>;
   onShown: () => void;
-  setColoredBlockCoordinates: (newArr: BlockCoordinates[]) => void;
+  onClear: () => void;
 };
 
 export const Selector: FC<Props> = ({
   isLoading,
   isError,
   presetsForTable,
-  setFieldCount,
+  setOption,
   onShown,
-  setColoredBlockCoordinates,
+  onClear,
 }) => {
   const [appMode, setAppMode] = useState('noMode');
 
   const selectorOnChangeHendler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onShown();
-    setColoredBlockCoordinates([]);
+    onClear();
     setAppMode(event.target.value);
 
     const selectedPreset = presetsForTable.find(
@@ -35,11 +34,9 @@ export const Selector: FC<Props> = ({
     );
 
     if (selectedPreset) {
-      setFieldCount(selectedPreset.field);
+      setOption(selectedPreset.field);
     }
   };
-
-  //console.log(presetsForTable.length); /// зато здесь он даже при ошибки на сервере длина всё равно 6
 
   return (
     <div className="select is-link">

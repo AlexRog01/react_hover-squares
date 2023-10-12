@@ -1,6 +1,7 @@
 import './Application.css';
 
 import { useCallback, useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { getPresetsforTable } from '../../api/presetsForTable';
 import { BlockCoordinates } from '../../types/BlockCoordinates';
@@ -17,21 +18,15 @@ export const Application = () => {
   const [isError, setIsError] = useState(false);
   const [isFieldShown, setIsFieldShown] = useState(false);
   const [fieldCount, setFieldCount] = useState(0);
+  // eslint-disable-next-line prettier/prettier
   const [coloredBlockCoordinatesArr, setColoredBlockCoordinates] = useState<
     BlockCoordinates[]
   >([]);
-  const [newColoredBlockCoordinates, setNewColoredBlockCoordinates] =
-    useState<BlockCoordinates>({ row: 0, column: 0 });
+  const [fieldRerender, setFieldRerender] = useState('');
 
   useEffect(() => {
     getData();
   }, []);
-
-  useEffect(() => {
-    setColoredBlockCoordinates(
-      addOrDeleteCoordinatesInArr(coloredBlockCoordinatesArr, newColoredBlockCoordinates),
-    );
-  }, [newColoredBlockCoordinates]);
 
   const getData = useCallback(() => {
     setIsLoading(true);
@@ -49,6 +44,12 @@ export const Application = () => {
     setIsError(false);
   }, []);
 
+  const newColoredBlockCoordinatesHandler = useCallback((coords: BlockCoordinates) => {
+    setColoredBlockCoordinates((currentCoords) =>
+      addOrDeleteCoordinatesInArr(currentCoords, coords),
+    );
+  }, []);
+
   return (
     <div className="application">
       <div className="application__interface">
@@ -57,16 +58,21 @@ export const Application = () => {
             isLoading={isLoading}
             isError={isError}
             presetsForTable={presetsForTable}
-            setFieldCount={setFieldCount}
+            setOption={setFieldCount}
             onShown={() => setIsFieldShown(false)}
-            setColoredBlockCoordinates={setColoredBlockCoordinates}
+            onClear={() => setColoredBlockCoordinates([])}
           />
 
           <StartOrRetryButton
             isLoading={isLoading}
             isError={isError}
-            reload={reload}
+            isFieldShown={isFieldShown}
+            onReload={reload}
             onShown={() => setIsFieldShown(true)}
+            onClear={() => {
+              setColoredBlockCoordinates([]);
+              setFieldRerender(uuidv4());
+            }}
           />
         </div>
 
@@ -74,7 +80,8 @@ export const Application = () => {
           {isFieldShown && (
             <Field
               fieldCount={fieldCount}
-              setNewColoredBlockCoordinates={setNewColoredBlockCoordinates}
+              fieldRerender={fieldRerender}
+              newColoredBlockCoordinatesHandler={newColoredBlockCoordinatesHandler}
             />
           )}
         </div>

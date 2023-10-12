@@ -6,39 +6,31 @@ import { FC } from 'react';
 type Props = {
   isLoading: boolean;
   isError: boolean;
-  reload: () => void;
+  isFieldShown: boolean;
+  onReload: () => void;
   onShown: () => void;
+  onClear: () => void;
 };
 
 export const StartOrRetryButton: FC<Props> = ({
   isLoading,
   isError,
-  reload,
+  isFieldShown,
+  onReload,
   onShown,
+  onClear,
 }) => {
+  const handler = isError ? onReload : isFieldShown ? onClear : onShown;
+  const text = isError ? 'Try again' : isFieldShown ? 'Clear' : 'START';
+
   return (
-    <>
-      {isError ? (
-        <button
-          className={classNames('startOrRetryButton button is-link', {
-            'is-loading': isLoading,
-          })}
-          onClick={reload}
-        >
-          Try again
-        </button>
-      ) : (
-        <button
-          className={classNames('startOrRetryButton button is-link', {
-            'is-loading': isLoading,
-          })}
-          onClick={() => {
-            onShown();
-          }}
-        >
-          START
-        </button>
-      )}
-    </>
+    <button
+      className={classNames('startOrRetryButton button is-link', {
+        'is-loading': isLoading,
+      })}
+      onClick={handler}
+    >
+      {text}
+    </button>
   );
 };

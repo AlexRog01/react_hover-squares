@@ -8,12 +8,14 @@ import { FieldBlock } from './FieldBlock/FieldBlock';
 
 type Props = {
   fieldCount: number;
-  setNewColoredBlockCoordinates: (coordinates: BlockCoordinates) => void;
+  fieldRerender: string;
+  newColoredBlockCoordinatesHandler: (coords: BlockCoordinates) => void;
 };
 
 export const Field: FC<Props> = memo(function Field({
   fieldCount,
-  setNewColoredBlockCoordinates,
+  fieldRerender,
+  newColoredBlockCoordinatesHandler,
 }) {
   const fieldContent = [];
 
@@ -24,7 +26,7 @@ export const Field: FC<Props> = memo(function Field({
           key={uuidv4()}
           row={row}
           column={column}
-          setNewColoredBlockCoordinates={setNewColoredBlockCoordinates}
+          setNewColoredBlockCoordinates={newColoredBlockCoordinatesHandler}
         />,
       );
     }

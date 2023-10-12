@@ -1,9 +1,9 @@
 .application {
-  width: 50rem;
-  padding-top: 10rem;
+  width: 54rem;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
+  padding: 10rem 2rem 0 2rem;
 }
 
 .application__interface {
